@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingarticles.R
 import com.example.countingarticles.databinding.FragmentArticleBinding
 
@@ -35,7 +37,19 @@ class ArticleFragment : Fragment() {
         )
 
         Log.i("GameFragment", "Called ViewModelProviders.of")
+        //
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+
+        val adapter = ArticleAdapter()
+        binding.articleList.adapter = adapter
+//        val linearLayoutManager = LinearLayoutManager(activity)
+//        binding.articleList.layoutManager = linearLayoutManager
+
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
+            }
+        })
 
         return binding.root
     }
