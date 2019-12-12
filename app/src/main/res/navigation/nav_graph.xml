@@ -9,7 +9,11 @@
         android:id="@+id/addArticle"
         android:name="com.example.countingarticles.articles.AddArticle"
         android:label="fragment_add_article"
-        tools:layout="@layout/fragment_add_article" />
+        tools:layout="@layout/fragment_add_article" >
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/articleFragment" />
+    </fragment>
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.example.countingarticles.articles.ArticleFragment"

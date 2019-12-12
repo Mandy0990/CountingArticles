@@ -6,26 +6,37 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.countingarticles.model.ArticleModel
 import com.example.countingarticles.model.ObjectBox
+import io.objectbox.android.AndroidScheduler
+import io.objectbox.query.Query
+import io.objectbox.reactive.DataSubscription
 
 
 class ArticleViewModel: ViewModel() {
 
-    //private val articleBox = ObjectBox.boxStore.boxFor(ArticleViewModel::class.java)
+    private val articleBox = ObjectBox.boxStore.boxFor(ArticleModel::class.java)
+    lateinit var articleViewAdapter: ArticleAdapter
+    private lateinit var articleQuery: Query<ArticleModel>
+    private lateinit var subscription: DataSubscription
 
-    // The current word
-//    private val _articles = MutableLiveData<List<ArticleModel>>()
-//    val articles: LiveData<List<ArticleModel>>
-//        get() = _articles
-      val articles = MutableLiveData<List<ArticleModel>>()
+    // The current article
+    private val _articles = MutableLiveData<List<ArticleModel>>()
+    val articles: LiveData<List<ArticleModel>>
+        get() = _articles
 
     init {
         Log.i("ArticleViewModel", "ArticleViewModel created!")
-        getAllArticles()
+        articleViewAdapter = ArticleAdapter()
+        articleQuery = articleBox.query().build()
+        subscription = articleQuery
+            .subscribe()
+            .on(AndroidScheduler.mainThread())
+            .observer {article -> articleViewAdapter.setArticleItemList(article) }
     }
 
     override fun onCleared() {
         super.onCleared()
         Log.i("ArticleViewModel", "ArticleViewModel destroyed!")
+        subscription.cancel()
     }
 
     fun getAllArticles(){
@@ -43,7 +54,17 @@ class ArticleViewModel: ViewModel() {
         )
 //        articleBox.put(articleItem)
 //        finish()
-        articles.value = listOf(articleItem,articleItem1)
+        _articles.value = listOf(articleItem,articleItem1)
 //        return liveDataA
+    }
+
+    fun addArticle(name: String){
+        val newArticle = ArticleModel(
+            articleName = name,
+            countArticle = 0,
+            priceArticle = 0
+        )
+        print("Debug" + newArticle.articleName)
+        articleBox.put(newArticle)
     }
 }

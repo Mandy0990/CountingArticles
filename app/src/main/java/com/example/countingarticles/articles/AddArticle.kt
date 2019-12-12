@@ -2,13 +2,19 @@ package com.example.countingarticles.articles
 
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.countingarticles.R
 import com.example.countingarticles.databinding.FragmentAddArticleBinding
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import com.example.countingarticles.model.ArticleModel
+import com.example.countingarticles.model.ObjectBox
+import kotlinx.android.synthetic.main.fragment_add_article.*
 
 /**
  * A simple [Fragment] subclass.
@@ -18,10 +24,14 @@ class AddArticle : Fragment() {
     private lateinit var viewModel: ArticleViewModel
     private lateinit var binding: FragmentAddArticleBinding
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
+
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
             inflater,
@@ -29,6 +39,27 @@ class AddArticle : Fragment() {
             container,
             false
         )
+
+        Log.i("AddArticleFragment", "Called ViewModelProviders.of")
+        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+
+        binding.fab.setOnClickListener{ saveArticle() }
         return binding.root
+    }
+
+    private fun saveArticle(){
+        if (article_name_edittext.text.isNullOrBlank()) {
+            Toast.makeText(activity,"Please enter a name for articcle",
+                Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            viewModel.addArticle(article_name_edittext.text.toString())
+            val action = ArticleFragmentDirections.nextAction()
+            findNavController().navigate(action)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_article, menu)
     }
 }

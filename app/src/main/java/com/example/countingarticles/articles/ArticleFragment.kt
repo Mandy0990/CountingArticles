@@ -11,6 +11,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingarticles.R
 import com.example.countingarticles.databinding.FragmentArticleBinding
+import com.example.countingarticles.model.ArticleModel
+import com.example.countingarticles.model.ObjectBox
+import io.objectbox.android.AndroidScheduler
+import io.objectbox.query.Query
+import io.objectbox.reactive.DataSubscription
 
 
 /**
@@ -36,20 +41,11 @@ class ArticleFragment : Fragment() {
             false
         )
 
-        Log.i("GameFragment", "Called ViewModelProviders.of")
-        //
+
+        Log.i("ArticleFragment", "Called ViewModelProviders.of")
         viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-
-        val adapter = ArticleAdapter()
-        binding.articleList.adapter = adapter
-//        val linearLayoutManager = LinearLayoutManager(activity)
-//        binding.articleList.layoutManager = linearLayoutManager
-
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.data = it
-            }
-        })
+        binding.articleList.adapter = viewModel.articleViewAdapter
+        binding.setLifecycleOwner(this)
 
         return binding.root
     }
