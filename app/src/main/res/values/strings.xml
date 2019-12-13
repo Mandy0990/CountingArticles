@@ -7,4 +7,7 @@
     <string name="share">Share</string>
     <string name="delete">Delete</string>
     <string name="name_article">Name Article</string>
+    <string name="article_name">Name Article</string>
+    <string name="article_price">Name Price</string>
+    <string name="article_count">Name Count</string>
 </resources>
