@@ -17,12 +17,7 @@ class ArticleViewModel: ViewModel() {
     lateinit var articleViewAdapter: ArticleAdapter
     private lateinit var articleQuery: Query<ArticleModel>
     private lateinit var subscription: DataSubscription
-
-    // The current article
-    private val _articles = MutableLiveData<List<ArticleModel>>()
-    val articles: LiveData<List<ArticleModel>>
-        get() = _articles
-
+    
     init {
         Log.i("ArticleViewModel", "ArticleViewModel created!")
         articleViewAdapter = ArticleAdapter()
@@ -37,25 +32,6 @@ class ArticleViewModel: ViewModel() {
         super.onCleared()
         Log.i("ArticleViewModel", "ArticleViewModel destroyed!")
         subscription.cancel()
-    }
-
-    fun getAllArticles(){
-
-        //val liveDataA = MutableLiveData<List<ArticleModel>>()
-        val articleItem = ArticleModel(
-            articleName =  "pandora",
-            countArticle = 10,
-            priceArticle = 40
-        )
-        val articleItem1 = ArticleModel(
-            articleName =  "pandora largo",
-            countArticle = 5,
-            priceArticle = 55
-        )
-//        articleBox.put(articleItem)
-//        finish()
-        _articles.value = listOf(articleItem,articleItem1)
-//        return liveDataA
     }
 
     fun addArticle(name: String){
