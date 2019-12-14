@@ -23,9 +23,6 @@ import io.objectbox.reactive.DataSubscription
  */
 class ArticleFragment : Fragment() {
 
-    private lateinit var viewModel: ArticleViewModel
-    private lateinit var binding: FragmentArticleBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,18 +30,24 @@ class ArticleFragment : Fragment() {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
 
-        // Inflate view and obtain an instance of the binding class
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_article,
-            container,
-            false
-        )
+        // Get a reference to the binding object and inflate the fragment views.
+        val binding: FragmentArticleBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_article, container, false)
 
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
-        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-        binding.articleList.adapter = viewModel.articleViewAdapter
+        val viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        binding.articleViewModel = viewModel
+
+        val adapter = ArticleAdapter()
+        binding.articleList.adapter = adapter
+
+//        viewModel.nights.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
+
         binding.setLifecycleOwner(this)
 
         return binding.root

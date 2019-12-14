@@ -17,7 +17,15 @@ class ArticleViewModel: ViewModel() {
     lateinit var articleViewAdapter: ArticleAdapter
     private lateinit var articleQuery: Query<ArticleModel>
     private lateinit var subscription: DataSubscription
-    
+
+    // The current article
+    private val _articles = MutableLiveData<List<ArticleModel>>()
+    val articles: LiveData<List<ArticleModel>>
+        get() = _articles
+
+    private val articleItemList = mutableListOf<ArticleModel>()
+
+
     init {
         Log.i("ArticleViewModel", "ArticleViewModel created!")
         articleViewAdapter = ArticleAdapter()
@@ -25,7 +33,13 @@ class ArticleViewModel: ViewModel() {
         subscription = articleQuery
             .subscribe()
             .on(AndroidScheduler.mainThread())
-            .observer {article -> articleViewAdapter.setArticleItemList(article) }
+            .observer {article -> setArticleItemList(article) }
+    }
+
+    fun setArticleItemList(articleItemList: List<ArticleModel>) {
+        //articles.value.plus(articleItemList)
+        this.articleItemList.clear()
+        this.articleItemList.addAll(articleItemList)
     }
 
     override fun onCleared() {
