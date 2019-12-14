@@ -6,7 +6,7 @@
 
         <variable
             name="articleViewModel"
-            type="com.example.countingarticles.articles.ArticleViewModel " />
+            type="com.example.countingarticles.articles.ArticleViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

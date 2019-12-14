@@ -42,11 +42,11 @@ class ArticleFragment : Fragment() {
         val adapter = ArticleAdapter()
         binding.articleList.adapter = adapter
 
-//        viewModel.nights.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.submitList(it)
-//            }
-//        })
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
 
         binding.setLifecycleOwner(this)
 

@@ -38,8 +38,10 @@ class ArticleViewModel: ViewModel() {
 
     fun setArticleItemList(articleItemList: List<ArticleModel>) {
         //articles.value.plus(articleItemList)
+        //_articles.value = listOf<ArticleModel>(articleItemList[0],articleItemList[1])
         this.articleItemList.clear()
         this.articleItemList.addAll(articleItemList)
+
     }
 
     override fun onCleared() {
