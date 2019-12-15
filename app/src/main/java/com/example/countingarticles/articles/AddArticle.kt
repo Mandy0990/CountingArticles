@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.countingarticles.database.ArticleDatabase
 import com.example.countingarticles.model.ArticleModel
 import com.example.countingarticles.model.ObjectBox
 import kotlinx.android.synthetic.main.fragment_add_article.*
@@ -40,8 +41,15 @@ class AddArticle : Fragment() {
             false
         )
 
-        Log.i("AddArticleFragment", "Called ViewModelProviders.of")
-        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        val application = requireNotNull(this.activity).application
+
+        val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
+
+        val viewModelFactory = ArticleViewModelFactory(dataSource,application)
+
+        Log.i("ArticleFragment", "Called ViewModelProviders.of")
+        viewModel = ViewModelProviders.of(
+            this,viewModelFactory).get(ArticleViewModel::class.java)
 
         binding.fab.setOnClickListener{ saveArticle() }
         return binding.root
@@ -53,7 +61,9 @@ class AddArticle : Fragment() {
                 Toast.LENGTH_SHORT)
                 .show()
         } else {
-            viewModel.addArticle(article_name_edittext.text.toString())
+            viewModel.addArticle(article_name_edittext.text.toString()
+                                ,article_price_edittext.text.toString().toInt()
+                                ,article_count_edittext.text.toString().toInt())
             val action = ArticleFragmentDirections.nextAction()
             findNavController().navigate(action)
         }

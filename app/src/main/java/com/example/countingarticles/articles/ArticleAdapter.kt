@@ -8,14 +8,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countingarticles.R
+import com.example.countingarticles.database.Article
 import com.example.countingarticles.model.ArticleModel
 import kotlinx.android.synthetic.main.article_item_list_view.view.*
 import kotlinx.android.synthetic.main.item_article_list_view.view.*
 
 
-class ArticleAdapter: ListAdapter<ArticleModel,ViewHolder>(ArticleDiffCallback())
+class ArticleAdapter: ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
 {
-    private val articleItemList = mutableListOf<ArticleModel>()
+    private val articleItemList = mutableListOf<Article>()
 
 //    fun setArticleItemList(articleItemList: List<ArticleModel>) {
 //        this.articleItemList.clear()
@@ -39,10 +40,10 @@ class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(i
     val priceArticle: TextView = itemView.findViewById(R.id.article_price)
     val countArticle: TextView = itemView.findViewById(R.id.article_count)
 
-    fun bind(articleItemModel: ArticleModel) {
+    fun bind(articleItemModel: Article) {
         nameArticle.text = articleItemModel.articleName
-        priceArticle.text = articleItemModel.priceArticle.toString()
-        countArticle.text = articleItemModel.countArticle.toString()
+        priceArticle.text = articleItemModel.articlePrice.toString()+ "$"
+        countArticle.text = articleItemModel.articleCount.toString()
         itemView.setOnClickListener {
             //recyclerViewItemClickListener.onItemClicked(borrowedItemModel)
         }
@@ -58,13 +59,13 @@ class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(i
     }
 }
 
-class ArticleDiffCallback : DiffUtil.ItemCallback<ArticleModel>() {
+class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
 
-    override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+        return oldItem.Id == newItem.Id
     }
 
-    override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
+    override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
         return oldItem == newItem
     }
 }

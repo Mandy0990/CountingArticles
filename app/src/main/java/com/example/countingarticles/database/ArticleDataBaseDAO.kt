@@ -23,7 +23,10 @@ interface ArticleDataBaseDAO{
     @Query("DELETE FROM article_table")
     fun clear()
 
-    @Query("SELECT * FROM article_table ORDER BY Id DESC")
+    @Query("SELECT * FROM article_table ORDER BY article_name ASC")
     fun getAllArticles(): LiveData<List<Article>>
+
+    @Query("SELECT * from article_table WHERE Id = :key")
+    fun getArticleWithId(key: Long): LiveData<Article>
 
 }

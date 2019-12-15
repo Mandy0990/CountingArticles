@@ -8,20 +8,23 @@
 
     <TextView
         android:id="@+id/article_name"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/article_name" />
 
     <TextView
         android:id="@+id/article_price"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@+id/article_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/article_price" />
@@ -33,6 +36,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/article_count"
+        android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@+id/article_price"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="#C7B0EC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/article_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,11 @@ class ArticleFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
+//        viewModel.articles.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
 
         binding.setLifecycleOwner(this)
 
