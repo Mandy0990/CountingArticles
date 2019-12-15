@@ -18,42 +18,18 @@ class ArticleViewModel(
     val database: ArticleDataBaseDAO,
     application: Application): AndroidViewModel(application) {
 
-    /** Code form Object Box*/
-    private val articleBox = ObjectBox.boxStore.boxFor(ArticleModel::class.java)
-    lateinit var articleViewAdapter: ArticleAdapter
-    private lateinit var articleQuery: Query<ArticleModel>
-    private lateinit var subscription: DataSubscription
 
-    // The current article
-    private val _articles = MutableLiveData<List<ArticleModel>>()
-    val articles: LiveData<List<ArticleModel>>
-        get() = _articles
-
-    private val articleItemList = mutableListOf<ArticleModel>()
-
-    
     init {
-        Log.i("ArticleViewModel", "ArticleViewModel created!")
-        articleViewAdapter = ArticleAdapter()
-        articleQuery = articleBox.query().build()
-        subscription = articleQuery
-            .subscribe()
-            .on(AndroidScheduler.mainThread())
-            .observer {article -> setArticleItemList(article) }
+       
     }
 
     fun setArticleItemList(articleItemList: List<ArticleModel>) {
-        //articles.value.plus(articleItemList)
-        //_articles.value = listOf<ArticleModel>(articleItemList[0],articleItemList[1])
-        this.articleItemList.clear()
-        this.articleItemList.addAll(articleItemList)
+       //All
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("ArticleViewModel", "ArticleViewModel destroyed!")
-        subscription.cancel()
     }
 
     fun addArticle(name: String){
@@ -63,6 +39,5 @@ class ArticleViewModel(
             priceArticle = 0
         )
         print("Debug" + newArticle.articleName)
-        articleBox.put(newArticle)
     }
 }
