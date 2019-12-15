@@ -9,7 +9,8 @@ buildscript {
         materialVersion = "1.1.0-beta01"
         navigationVersion = "2.1.0"
         constraintLayoutVersion = "2.0.0-beta3"
-        room_version = '2.0.0'
+        room_version = '2.2.2'
+        coroutine_version = '1.0.0'
     }
 
     repositories {

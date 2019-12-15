@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingarticles.R
+import com.example.countingarticles.database.ArticleDatabase
 import com.example.countingarticles.databinding.FragmentArticleBinding
 import com.example.countingarticles.model.ArticleModel
 import com.example.countingarticles.model.ObjectBox
@@ -34,9 +35,16 @@ class ArticleFragment : Fragment() {
         val binding: FragmentArticleBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_article, container, false)
 
+        val application = requireNotNull(this.activity).application
+
+        val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
+
+        val viewModelFactory = ArticleViewModelFactory(dataSource,application)
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
-        val viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        // Get a reference to the ViewModel associated with this fragment.
+        val viewModel = ViewModelProviders.of(
+            this,viewModelFactory).get(ArticleViewModel::class.java)
         binding.articleViewModel = viewModel
 
         val adapter = ArticleAdapter()

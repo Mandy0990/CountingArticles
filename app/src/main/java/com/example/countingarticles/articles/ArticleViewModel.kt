@@ -1,9 +1,12 @@
 package com.example.countingarticles.articles
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.countingarticles.database.ArticleDataBaseDAO
 import com.example.countingarticles.model.ArticleModel
 import com.example.countingarticles.model.ObjectBox
 import io.objectbox.android.AndroidScheduler
@@ -11,8 +14,11 @@ import io.objectbox.query.Query
 import io.objectbox.reactive.DataSubscription
 
 
-class ArticleViewModel: ViewModel() {
+class ArticleViewModel(
+    val database: ArticleDataBaseDAO,
+    application: Application): AndroidViewModel(application) {
 
+    /** Code form Object Box*/
     private val articleBox = ObjectBox.boxStore.boxFor(ArticleModel::class.java)
     lateinit var articleViewAdapter: ArticleAdapter
     private lateinit var articleQuery: Query<ArticleModel>
@@ -25,7 +31,7 @@ class ArticleViewModel: ViewModel() {
 
     private val articleItemList = mutableListOf<ArticleModel>()
 
-
+    
     init {
         Log.i("ArticleViewModel", "ArticleViewModel created!")
         articleViewAdapter = ArticleAdapter()
