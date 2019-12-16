@@ -4,6 +4,7 @@ package com.example.countingarticles.articles
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -47,7 +48,10 @@ class ArticleFragment : Fragment() {
             this,viewModelFactory).get(ArticleViewModel::class.java)
         binding.articleViewModel = viewModel
 
-        val adapter = ArticleAdapter()
+        val adapter = ArticleAdapter(ArticleListener { articleId ->
+            Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
+            viewModel.onArticleClicked(articleId)
+        })
         binding.articleList.adapter = adapter
 
         viewModel.articles.observe(viewLifecycleOwner, Observer {

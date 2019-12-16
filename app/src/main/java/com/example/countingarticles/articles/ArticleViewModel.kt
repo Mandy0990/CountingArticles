@@ -29,6 +29,10 @@ class ArticleViewModel(
 
     private var articleCurrent = MutableLiveData<Article?>()
 
+    private val _articleToUpdate = MutableLiveData<Long>()
+    val articleToUpdate
+        get() = _articleToUpdate
+
     init {
         initializeTonight()
     }
@@ -44,6 +48,10 @@ class ArticleViewModel(
             var article = database.get(0)
             article
         }
+    }
+
+    fun onArticleClicked(id: Long) {
+        _articleToUpdate.value = id
     }
 
     override fun onCleared() {

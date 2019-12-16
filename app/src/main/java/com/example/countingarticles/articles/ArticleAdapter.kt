@@ -9,20 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countingarticles.R
 import com.example.countingarticles.database.Article
-import com.example.countingarticles.model.ArticleModel
-import kotlinx.android.synthetic.main.article_item_list_view.view.*
-import kotlinx.android.synthetic.main.item_article_list_view.view.*
+import com.example.countingarticles.databinding.ArticleItemListViewBinding
 
 
-class ArticleAdapter: ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
+class ArticleAdapter( val clickListener: ArticleListener): ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
 {
-    private val articleItemList = mutableListOf<Article>()
-
-//    fun setArticleItemList(articleItemList: List<ArticleModel>) {
-//        this.articleItemList.clear()
-//        this.articleItemList.addAll(articleItemList)
-//        //notifyDataSetChanged()
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -30,31 +21,34 @@ class ArticleAdapter: ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder.bind( articleItemList[position])
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),clickListener)
     }
 
 }
 
-class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
-    val nameArticle: TextView = itemView.findViewById(R.id.article_name)
-    val priceArticle: TextView = itemView.findViewById(R.id.article_price)
-    val countArticle: TextView = itemView.findViewById(R.id.article_count)
+class ViewHolder private constructor(val binding: ArticleItemListViewBinding) : RecyclerView.ViewHolder(binding.root){
+    //val nameArticle: TextView = itemView.findViewById(R.id.article_name)
+    //val priceArticle: TextView = itemView.findViewById(R.id.article_price)
+    //val countArticle: TextView = itemView.findViewById(R.id.article_count)
 
-    fun bind(articleItemModel: Article) {
-        nameArticle.text = articleItemModel.articleName
-        priceArticle.text = articleItemModel.articlePrice.toString()+ "$"
-        countArticle.text = articleItemModel.articleCount.toString()
-        itemView.setOnClickListener {
+    fun bind(article: Article,clickListener: ArticleListener) {
+        binding.article = article
+        binding.clickListener = clickListener
+
+        binding.articleName.text = article.articleName
+        binding.articlePrice.text = article.articlePrice.toString()+ "$"
+        binding.articleCount.text = article.articleCount.toString()
+        //itemView.setOnClickListener {
             //recyclerViewItemClickListener.onItemClicked(borrowedItemModel)
-        }
+        //}
+        binding.executePendingBindings()
     }
 
     companion object {
         fun from(parent: ViewGroup): ViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater
-                .inflate(R.layout.article_item_list_view, parent, false)
-            return ViewHolder(view)
+            val binding = ArticleItemListViewBinding.inflate(layoutInflater,parent,false)
+            return ViewHolder(binding)
         }
     }
 }
@@ -69,3 +63,9 @@ class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
         return oldItem == newItem
     }
 }
+
+class ArticleListener(val clickListener: (articleId: Long) -> Unit) {
+    fun onClick(article: Article) = clickListener(article.Id)
+}
+
+
