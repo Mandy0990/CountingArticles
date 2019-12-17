@@ -8,12 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.countingarticles.database.Article
 import com.example.countingarticles.database.ArticleDataBaseDAO
-import com.example.countingarticles.model.ArticleModel
-import com.example.countingarticles.model.ArticleModel_.priceArticle
-import com.example.countingarticles.model.ObjectBox
-import io.objectbox.android.AndroidScheduler
-import io.objectbox.query.Query
-import io.objectbox.reactive.DataSubscription
 import kotlinx.coroutines.*
 
 

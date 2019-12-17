@@ -1,4 +1,4 @@
-package com.example.countingarticles.articles
+package com.example.countingarticles.addArticle
 
 
 import android.os.Bundle
@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import com.example.countingarticles.R
 import com.example.countingarticles.databinding.FragmentAddArticleBinding
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.countingarticles.articles.ArticleFragmentDirections
+import com.example.countingarticles.articles.ArticleViewModel
+import com.example.countingarticles.articles.ArticleViewModelFactory
 import com.example.countingarticles.database.ArticleDatabase
-import com.example.countingarticles.model.ArticleModel
-import com.example.countingarticles.model.ObjectBox
 import kotlinx.android.synthetic.main.fragment_add_article.*
 
 /**
@@ -45,7 +45,11 @@ class AddArticle : Fragment() {
 
         val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
 
-        val viewModelFactory = ArticleViewModelFactory(dataSource,application)
+        val viewModelFactory =
+            ArticleViewModelFactory(
+                dataSource,
+                application
+            )
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
         viewModel = ViewModelProviders.of(
@@ -64,7 +68,8 @@ class AddArticle : Fragment() {
             viewModel.addArticle(article_name_edittext.text.toString()
                                 ,article_price_edittext.text.toString().toInt()
                                 ,article_count_edittext.text.toString().toInt())
-            val action = ArticleFragmentDirections.nextAction()
+            val action =
+                AddArticleDirections.nextActionToListArticle()
             findNavController().navigate(action)
         }
     }

@@ -7,11 +7,15 @@
 
     <fragment
         android:id="@+id/addArticle"
-        android:name="com.example.countingarticles.articles.AddArticle"
+        android:name="com.example.countingarticles.addArticle.AddArticle"
         android:label="fragment_add_article"
         tools:layout="@layout/fragment_add_article" >
+        <argument
+            android:name="articleKey"
+            app:argType="integer"
+            android:defaultValue="-1"/>
         <action
-            android:id="@+id/next_action"
+            android:id="@+id/next_action_to_list_article"
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
@@ -20,7 +24,7 @@
         android:label="fragment_article"
         tools:layout="@layout/fragment_article" >
         <action
-            android:id="@+id/next_action"
+            android:id="@+id/next_action_to_add_article"
             app:destination="@id/addArticle" />
     </fragment>
 </navigation>
