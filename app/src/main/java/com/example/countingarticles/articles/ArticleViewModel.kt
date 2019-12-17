@@ -23,9 +23,6 @@ class ArticleViewModel(
 
     private var articleCurrent = MutableLiveData<Article?>()
 
-    private val _articleToUpdate = MutableLiveData<Long>()
-    val articleToUpdate
-        get() = _articleToUpdate
 
     init {
         initializeTonight()
@@ -44,8 +41,16 @@ class ArticleViewModel(
         }
     }
 
+    private val _articleIdToUpdate = MutableLiveData<Long>()
+    val articleIdToUpdate
+        get() = _articleIdToUpdate
+
     fun onArticleClicked(id: Long) {
-        _articleToUpdate.value = id
+        _articleIdToUpdate.value = id
+    }
+
+    fun onAddArticleNavigated() {
+        _articleIdToUpdate.value = null
     }
 
     override fun onCleared() {
@@ -53,26 +58,6 @@ class ArticleViewModel(
         viewModelJob.cancel()
     }
 
-    fun addArticle(name: String,price: Int, count:Int){
-
-        uiScope.launch {
-            val newArticle = Article(
-                articleName = name,
-                articlePrice =  price,
-                articleCount = count
-            )
-            insert(newArticle)
-            articleCurrent.value = getArticleCurrentFromDatabase()
-        }
-
-        //print("Debug" + newArticle.articleName)
-    }
-
-    private suspend fun insert(article: Article) {
-        withContext(Dispatchers.IO) {
-            database.insert(article)
-        }
-    }
 
     fun updateArticle(price: Int, count:Int){
         uiScope.launch {

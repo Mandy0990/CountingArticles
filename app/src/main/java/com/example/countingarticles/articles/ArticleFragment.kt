@@ -9,8 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingarticles.R
+import com.example.countingarticles.addArticle.AddArticleDirections
 import com.example.countingarticles.database.ArticleDatabase
 import com.example.countingarticles.databinding.FragmentArticleBinding
 import com.example.countingarticles.model.ArticleModel
@@ -49,7 +51,7 @@ class ArticleFragment : Fragment() {
         binding.articleViewModel = viewModel
 
         val adapter = ArticleAdapter(ArticleListener { articleId ->
-            Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
             viewModel.onArticleClicked(articleId)
         })
         binding.articleList.adapter = adapter
@@ -59,11 +61,16 @@ class ArticleFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
-//        viewModel.articles.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.submitList(it)
-//            }
-//        })
+        // Add an Observer on the state variable for Navigating when and item is clicked.
+        viewModel.articleIdToUpdate.observe(this, Observer { articleId ->
+            articleId?.let {
+
+                this.findNavController().navigate(
+                    ArticleFragmentDirections
+                        .nextActionToAddArticle(articleId.toInt()))
+                viewModel.onAddArticleNavigated()
+            }
+        })
 
         binding.setLifecycleOwner(this)
 

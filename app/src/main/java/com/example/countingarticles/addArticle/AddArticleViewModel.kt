@@ -5,23 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.countingarticles.database.Article
 import com.example.countingarticles.database.ArticleDataBaseDAO
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 class AddArticleViewModel(
     private val articleKey: Long = 0L,
     dataSource: ArticleDataBaseDAO) : ViewModel() {
 
-    /**
-     * Hold a reference to SleepDatabase via its SleepDatabaseDao.
-     */
     val database = dataSource
 
-    /** Coroutine setup variables */
-
-    /**
-     * viewModelJob allows us to cancel all coroutines started by this ViewModel.
-     */
     private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val article: LiveData<Article>
 
@@ -47,4 +40,36 @@ class AddArticleViewModel(
         super.onCleared()
         viewModelJob.cancel()
     }
+
+    fun addArticle(name: String,price: Int, count:Int){
+        uiScope.launch {
+            val newArticle = Article(
+                articleName = name,
+                articlePrice =  price,
+                articleCount = count
+            )
+            insert(newArticle)
+        }
+    }
+
+    private suspend fun insert(article: Article) {
+        withContext(Dispatchers.IO) {
+            database.insert(article)
+        }
+    }
+
+//    fun updateArticle(price: Int, count:Int){
+//        uiScope.launch {
+//            val oldArticle = articleCurrent.value ?: return@launch
+//            oldArticle.articlePrice = price
+//            oldArticle.articleCount = count
+//            update(oldArticle)
+//        }
+//    }
+//
+//    private suspend fun update(article: Article) {
+//        withContext(Dispatchers.IO) {
+//            database.update(article)
+//        }
+//    }
 }

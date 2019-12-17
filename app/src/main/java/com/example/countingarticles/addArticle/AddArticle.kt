@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_add_article.*
  */
 class AddArticle : Fragment() {
 
-    private lateinit var viewModel: ArticleViewModel
+    private lateinit var viewModel: AddArticleViewModel
     private lateinit var binding: FragmentAddArticleBinding
 
 
@@ -42,21 +42,27 @@ class AddArticle : Fragment() {
         )
 
         val application = requireNotNull(this.activity).application
+        val arguments = AddArticleArgs.fromBundle(arguments!!)
 
+        // Create an instance of the ViewModel Factory.
         val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
+        val viewModelFactory = AddArticleViewModelFactory(arguments.articleKey.toLong(), dataSource)
 
-        val viewModelFactory =
-            ArticleViewModelFactory(
-                dataSource,
-                application
-            )
+        // Get a reference to the ViewModel associated with this fragment.
+        viewModel =
+            ViewModelProviders.of(
+                this, viewModelFactory).get(AddArticleViewModel::class.java)
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
-        viewModel = ViewModelProviders.of(
-            this,viewModelFactory).get(ArticleViewModel::class.java)
 
         binding.fab.setOnClickListener{ saveArticle() }
+        saveOrUpdateArticle(arguments.articleKey)
         return binding.root
+    }
+
+    private fun saveOrUpdateArticle(articleKey: Int) {
+        if(articleKey != -1)
+            Toast.makeText(context, "${articleKey}", Toast.LENGTH_LONG).show()
     }
 
     private fun saveArticle(){
