@@ -18,7 +18,7 @@ class AddArticleViewModel(
 
     private val article: LiveData<Article>
 
-    fun getNight() = article
+    fun getArticle() = article
 
     init {
         article=database.getArticleWithId(articleKey)

@@ -9,11 +9,13 @@ import androidx.databinding.DataBindingUtil
 import com.example.countingarticles.R
 import com.example.countingarticles.databinding.FragmentAddArticleBinding
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.countingarticles.articles.ArticleFragmentDirections
 import com.example.countingarticles.articles.ArticleViewModel
 import com.example.countingarticles.articles.ArticleViewModelFactory
+import com.example.countingarticles.database.Article
 import com.example.countingarticles.database.ArticleDatabase
 import kotlinx.android.synthetic.main.fragment_add_article.*
 
@@ -56,13 +58,28 @@ class AddArticle : Fragment() {
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
 
         binding.fab.setOnClickListener{ saveArticle() }
-        saveOrUpdateArticle(arguments.articleKey)
+
+        viewModel.getArticle().observe(this, Observer {
+            if (arguments.articleKey.toInt() != -1) { // Observed state is true.
+                saveOrUpdateArticle(it)
+            }
+        })
+
+
         return binding.root
     }
 
-    private fun saveOrUpdateArticle(articleKey: Int) {
-        if(articleKey != -1)
-            Toast.makeText(context, "${articleKey}", Toast.LENGTH_LONG).show()
+    private fun saveOrUpdateArticle(article: Article) {
+        if(article.Id != -1.toLong()) {
+            Toast.makeText(context, article.articleName, Toast.LENGTH_LONG).show()
+            putValueArticle(article.articleName,article.articlePrice,article.articleCount)
+        }
+    }
+
+    private fun putValueArticle(articleName: String, articlePrice: Int, articleCount: Int) {
+        binding.articleNameEdittext.setText(articleName)
+        binding.articleCountEdittext.setText(articleCount.toString())
+        binding.articlePriceEdittext.setText(articlePrice.toString())
     }
 
     private fun saveArticle(){
