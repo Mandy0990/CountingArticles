@@ -11,7 +11,7 @@ data class Article(
     var Id: Long = 0L,
 
     @ColumnInfo(name = "article_name")
-    val articleName: String = "",
+    var articleName: String = "",
 
     @ColumnInfo(name = "article_price")
     var articlePrice: Int = -1,

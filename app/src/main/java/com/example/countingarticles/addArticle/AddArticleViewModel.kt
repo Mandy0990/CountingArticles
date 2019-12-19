@@ -58,18 +58,19 @@ class AddArticleViewModel(
         }
     }
 
-//    fun updateArticle(price: Int, count:Int){
-//        uiScope.launch {
-//            val oldArticle = articleCurrent.value ?: return@launch
-//            oldArticle.articlePrice = price
-//            oldArticle.articleCount = count
-//            update(oldArticle)
-//        }
-//    }
-//
-//    private suspend fun update(article: Article) {
-//        withContext(Dispatchers.IO) {
-//            database.update(article)
-//        }
-//    }
+    fun updateArticle(name: String, price: Int, count:Int){
+        uiScope.launch {
+            val oldArticle = article.value ?: return@launch
+            oldArticle.articleName = name
+            oldArticle.articlePrice = price
+            oldArticle.articleCount = count
+            update(oldArticle)
+        }
+    }
+
+    private suspend fun update(article: Article) {
+        withContext(Dispatchers.IO) {
+            database.update(article)
+        }
+    }
 }

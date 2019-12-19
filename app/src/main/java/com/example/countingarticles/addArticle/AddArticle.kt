@@ -57,7 +57,7 @@ class AddArticle : Fragment() {
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
 
-        binding.fab.setOnClickListener{ saveArticle() }
+        binding.fab.setOnClickListener{ saveArticle(arguments.articleKey.toInt()) }
 
         viewModel.getArticle().observe(this, Observer {
             if (arguments.articleKey.toInt() != -1) { // Observed state is true.
@@ -82,15 +82,21 @@ class AddArticle : Fragment() {
         binding.articlePriceEdittext.setText(articlePrice.toString())
     }
 
-    private fun saveArticle(){
+    private fun saveArticle(articleId: Int){
         if (article_name_edittext.text.isNullOrBlank()) {
             Toast.makeText(activity,"Please enter a name for articcle",
                 Toast.LENGTH_SHORT)
                 .show()
         } else {
-            viewModel.addArticle(article_name_edittext.text.toString()
-                                ,article_price_edittext.text.toString().toInt()
-                                ,article_count_edittext.text.toString().toInt())
+            var name = article_name_edittext.text.toString()
+            var price = if (article_price_edittext.text.toString() == " ") "0" else article_price_edittext.text.toString()
+            var count = if (article_count_edittext.text.toString() == " ") "0" else article_count_edittext.text.toString()
+
+            if(articleId == -1) {
+                viewModel.addArticle(name,price.toInt(),count.toInt())
+            }else{
+                viewModel.updateArticle(name,price.toInt(),count.toInt())
+            }
             val action =
                 AddArticleDirections.nextActionToListArticle()
             findNavController().navigate(action)
