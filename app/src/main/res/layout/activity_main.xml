@@ -20,6 +20,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+        <TextView
+            android:id="@+id/action_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="Counting Articles"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <fragment
             android:id="@+id/my_nav_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -33,14 +47,5 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:navGraph="@navigation/nav_graph" />
 
-        <TextView
-            android:id="@+id/action_bar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Counting Articles"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

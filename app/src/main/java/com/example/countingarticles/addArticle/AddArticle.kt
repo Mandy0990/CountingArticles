@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_add_article.*
 /**
  * A simple [Fragment] subclass.
  */
+@Suppress("UNREACHABLE_CODE")
 class AddArticle : Fragment() {
 
     private lateinit var viewModel: AddArticleViewModel
@@ -43,6 +44,8 @@ class AddArticle : Fragment() {
             false
         )
 
+        //Preparando parametros para inicializar el view model, en arguments esta el Id del articulo
+        //que viene del ArticleFragment
         val application = requireNotNull(this.activity).application
         val arguments = AddArticleArgs.fromBundle(arguments!!)
 
@@ -57,8 +60,11 @@ class AddArticle : Fragment() {
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
 
+        //Asigno el evento onClick del button salvar
         binding.fab.setOnClickListener{ saveArticle(arguments.articleKey.toInt()) }
 
+        //Creo observer a la variable article, en el view model que me notifica cuando se cargo ya
+        //de la BD el article actual(clicked) para mostrar sus valores en los imput field
         viewModel.getArticle().observe(this, Observer {
             if (arguments.articleKey.toInt() != -1) { // Observed state is true.
                 saveOrUpdateArticle(it)
@@ -106,4 +112,11 @@ class AddArticle : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_article, menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+        print("HOLA")
+
+    }
+
 }

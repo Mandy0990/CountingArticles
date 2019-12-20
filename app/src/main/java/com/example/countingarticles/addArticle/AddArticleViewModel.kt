@@ -73,4 +73,13 @@ class AddArticleViewModel(
             database.update(article)
         }
     }
+
+    fun removeArticle() {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                if(articleKey.toInt() != -1)
+                    database.delete(articleKey)
+            }
+        }
+    }
 }
