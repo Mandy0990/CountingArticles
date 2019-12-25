@@ -74,10 +74,18 @@ class AddArticleViewModel(
         }
     }
 
+<<<<<<< HEAD
     fun removeArticle(){
         uiScope.launch {
             withContext(Dispatchers.IO){
                 database.delete(articleKey)
+=======
+    fun removeArticle() {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                if(articleKey.toInt() != -1)
+                    database.delete(articleKey)
+>>>>>>> 09fbff429fbe785b3827074349cf643608d43e69
             }
         }
     }

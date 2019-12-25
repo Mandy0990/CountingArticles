@@ -25,6 +25,6 @@
         tools:layout="@layout/fragment_article" >
         <action
             android:id="@+id/next_action_to_add_article"
-            app:destination="@id/addArticle" />
+            app:destination="@+id/addArticle" />
     </fragment>
 </navigation>
