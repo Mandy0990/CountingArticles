@@ -27,7 +27,7 @@ class AddArticle : Fragment() {
 
     private lateinit var viewModel: AddArticleViewModel
     private lateinit var binding: FragmentAddArticleBinding
-    private  var articleKey: Int = -1
+    private var articleKey: Int = -1
 
 
     override fun onCreateView(
@@ -58,12 +58,13 @@ class AddArticle : Fragment() {
         // Get a reference to the ViewModel associated with this fragment.
         viewModel =
             ViewModelProviders.of(
-                this, viewModelFactory).get(AddArticleViewModel::class.java)
+                this, viewModelFactory
+            ).get(AddArticleViewModel::class.java)
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
 
         //Asigno el evento onClick del button salvar
-        binding.fab.setOnClickListener{ saveArticle(arguments.articleKey.toInt()) }
+        binding.fab.setOnClickListener { saveArticle(arguments.articleKey.toInt()) }
 
         //Creo observer a la variable article, en el view model que me notifica cuando se cargo ya
         //de la BD el article actual(clicked) para mostrar sus valores en los imput field
@@ -78,9 +79,9 @@ class AddArticle : Fragment() {
     }
 
     private fun saveOrUpdateArticle(article: Article) {
-        if(article.Id != -1.toLong()) {
+        if (article.Id != -1.toLong()) {
             Toast.makeText(context, article.articleName, Toast.LENGTH_LONG).show()
-            putValueArticle(article.articleName,article.articlePrice,article.articleCount)
+            putValueArticle(article.articleName, article.articlePrice, article.articleCount)
         }
     }
 
@@ -90,20 +91,24 @@ class AddArticle : Fragment() {
         binding.articlePriceEdittext.setText(articlePrice.toString())
     }
 
-    private fun saveArticle(articleId: Int){
+    private fun saveArticle(articleId: Int) {
         if (article_name_edittext.text.isNullOrBlank()) {
-            Toast.makeText(activity,"Please enter a name for articcle",
-                Toast.LENGTH_SHORT)
+            Toast.makeText(
+                activity, "Please enter a name for articcle",
+                Toast.LENGTH_SHORT
+            )
                 .show()
         } else {
             var name = article_name_edittext.text.toString()
-            var price = if (article_price_edittext.text.toString() == " ") "0" else article_price_edittext.text.toString()
-            var count = if (article_count_edittext.text.toString() == " ") "0" else article_count_edittext.text.toString()
+            var price =
+                if (article_price_edittext.text.toString() == " ") "0" else article_price_edittext.text.toString()
+            var count =
+                if (article_count_edittext.text.toString() == " ") "0" else article_count_edittext.text.toString()
 
-            if(articleId == -1) {
-                viewModel.addArticle(name,price.toInt(),count.toInt())
-            }else{
-                viewModel.updateArticle(name,price.toInt(),count.toInt())
+            if (articleId == -1) {
+                viewModel.addArticle(name, price.toInt(), count.toInt())
+            } else {
+                viewModel.updateArticle(name, price.toInt(), count.toInt())
             }
             navigateToListArticle()
         }
@@ -114,16 +119,14 @@ class AddArticle : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-<<<<<<< HEAD
         return when (item.itemId) {
             R.id.button_delete -> {
-                if(articleKey == -1) {
+                if (articleKey == -1) {
                     Toast.makeText(
                         activity, "This article don't exit in DataBase",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-                else{
+                } else {
                     viewModel.removeArticle()
                     navigateToListArticle()
                 }
@@ -133,16 +136,12 @@ class AddArticle : Fragment() {
         }
     }
 
-    fun navigateToListArticle(){
+    fun navigateToListArticle() {
         val action =
             AddArticleDirections.nextActionToListArticle()
         findNavController().navigate(action)
     }
-=======
-        return super.onOptionsItemSelected(item)
-        print("HOLA")
 
-    }
-
->>>>>>> 09fbff429fbe785b3827074349cf643608d43e69
 }
+
+

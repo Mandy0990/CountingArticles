@@ -3,11 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-<<<<<<< HEAD
         android:id="@+id/button_delete"
-=======
-        android:id="@+id/remove_article"
->>>>>>> 09fbff429fbe785b3827074349cf643608d43e69
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/delete"
         app:showAsAction="ifRoom" />
