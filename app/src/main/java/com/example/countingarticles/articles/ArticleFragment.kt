@@ -1,6 +1,8 @@
 package com.example.countingarticles.articles
 
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,16 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingarticles.R
-import com.example.countingarticles.addArticle.AddArticleDirections
+import com.example.countingarticles.addArticle.AddArticleViewModel
 import com.example.countingarticles.database.ArticleDatabase
 import com.example.countingarticles.databinding.FragmentArticleBinding
-import com.example.countingarticles.model.ArticleModel
-import com.example.countingarticles.model.ObjectBox
-import io.objectbox.android.AndroidScheduler
-import io.objectbox.query.Query
-import io.objectbox.reactive.DataSubscription
 
 
 /**
@@ -27,6 +23,7 @@ import io.objectbox.reactive.DataSubscription
  */
 class ArticleFragment : Fragment() {
 
+    private lateinit var viewModel: ArticleViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +43,7 @@ class ArticleFragment : Fragment() {
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
         // Get a reference to the ViewModel associated with this fragment.
-        val viewModel = ViewModelProviders.of(
+        viewModel = ViewModelProviders.of(
             this,viewModelFactory).get(ArticleViewModel::class.java)
         binding.articleViewModel = viewModel
 
@@ -79,6 +76,29 @@ class ArticleFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.button_share -> {
+
+                var textToShare = viewModel.getTextToShareWithWatsApp()
+                val whatsappIntent = Intent(Intent.ACTION_SEND)
+                whatsappIntent.type = "text/plain"
+                whatsappIntent.setPackage("com.whatsapp")
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, textToShare)
+                try {
+                    activity!!.startActivity(whatsappIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(
+                        activity, "WhatsApp not installed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

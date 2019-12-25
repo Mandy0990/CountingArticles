@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -35,10 +36,16 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Have the NavigationUI look for an action or destination matching the menu
-//        // item id and navigate there if found.
-//        // Otherwise, bubble up to the parent.
-        return item.onNavDestinationSelected(findNavController(R.id.my_nav_fragment))
-                || super.onOptionsItemSelected(item)
+
+        return when(item.itemId){
+            R.id.addArticle->{
+                // Have the NavigationUI look for an action or destination matching the menu
+                // item id and navigate there if found.
+                // Otherwise, bubble up to the parent.
+                return item.onNavDestinationSelected(findNavController(R.id.my_nav_fragment))
+                        || super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

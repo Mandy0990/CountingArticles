@@ -26,6 +26,7 @@ class AddArticle : Fragment() {
 
     private lateinit var viewModel: AddArticleViewModel
     private lateinit var binding: FragmentAddArticleBinding
+    private  var articleKey: Int = -1
 
 
     override fun onCreateView(
@@ -45,6 +46,7 @@ class AddArticle : Fragment() {
 
         val application = requireNotNull(this.activity).application
         val arguments = AddArticleArgs.fromBundle(arguments!!)
+        articleKey = arguments.articleKey
 
         // Create an instance of the ViewModel Factory.
         val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
@@ -60,7 +62,7 @@ class AddArticle : Fragment() {
         binding.fab.setOnClickListener{ saveArticle(arguments.articleKey.toInt()) }
 
         viewModel.getArticle().observe(this, Observer {
-            if (arguments.articleKey.toInt() != -1) { // Observed state is true.
+            if (arguments.articleKey.toInt() != -1 && it != null) { // Observed state is true.
                 saveOrUpdateArticle(it)
             }
         })
@@ -97,13 +99,36 @@ class AddArticle : Fragment() {
             }else{
                 viewModel.updateArticle(name,price.toInt(),count.toInt())
             }
-            val action =
-                AddArticleDirections.nextActionToListArticle()
-            findNavController().navigate(action)
+            navigateToListArticle()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_article, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.button_delete -> {
+                if(articleKey == -1) {
+                    Toast.makeText(
+                        activity, "This article don't exit in DataBase",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    viewModel.removeArticle()
+                    navigateToListArticle()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun navigateToListArticle(){
+        val action =
+            AddArticleDirections.nextActionToListArticle()
+        findNavController().navigate(action)
     }
 }

@@ -1,7 +1,10 @@
 package com.example.countingarticles.articles
 
 import android.app.Application
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -58,21 +61,7 @@ class ArticleViewModel(
         viewModelJob.cancel()
     }
 
-
-    fun updateArticle(price: Int, count:Int){
-        uiScope.launch {
-            val oldArticle = articleCurrent.value ?: return@launch
-            oldArticle.articlePrice = price
-            oldArticle.articleCount = count
-            update(oldArticle)
-        }
+    fun getTextToShareWithWatsApp(): String{
+        return "Articles"
     }
-
-    private suspend fun update(article: Article) {
-        withContext(Dispatchers.IO) {
-            database.update(article)
-        }
-    }
-
-
 }
