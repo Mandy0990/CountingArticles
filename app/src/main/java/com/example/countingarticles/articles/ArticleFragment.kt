@@ -91,7 +91,7 @@ class ArticleFragment : Fragment() {
                     activity!!.startActivity(whatsappIntent)
                 } catch (ex: ActivityNotFoundException) {
                     Toast.makeText(
-                        activity, "WhatsApp not installed",
+                        activity, textToShare,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

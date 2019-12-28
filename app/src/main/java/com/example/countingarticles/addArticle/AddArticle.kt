@@ -101,9 +101,9 @@ class AddArticle : Fragment() {
         } else {
             var name = article_name_edittext.text.toString()
             var price =
-                if (article_price_edittext.text.toString() == " ") "0" else article_price_edittext.text.toString()
+                if (article_price_edittext.text.toString() == "") "0" else article_price_edittext.text.toString()
             var count =
-                if (article_count_edittext.text.toString() == " ") "0" else article_count_edittext.text.toString()
+                if (article_count_edittext.text.toString() == "") "0" else article_count_edittext.text.toString()
 
             if (articleId == -1) {
                 viewModel.addArticle(name, price.toInt(), count.toInt())

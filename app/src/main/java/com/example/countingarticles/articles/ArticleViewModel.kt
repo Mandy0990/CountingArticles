@@ -62,6 +62,14 @@ class ArticleViewModel(
     }
 
     fun getTextToShareWithWatsApp(): String{
-        return "Articles"
+        var s = ""
+        articles.let {
+            for (art in it.value!!){
+                if (art.articleCount != 0 ){
+                    s += art.articleName + " " + art.articlePrice.toString() + "$" + " " + art.articleCount.toString() + "\n"
+                }
+            }
+        }
+        return s
     }
 }
