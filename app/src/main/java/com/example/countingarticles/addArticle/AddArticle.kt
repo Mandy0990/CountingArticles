@@ -1,23 +1,25 @@
 package com.example.countingarticles.addArticle
 
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import androidx.databinding.DataBindingUtil
-import com.example.countingarticles.R
-import com.example.countingarticles.databinding.FragmentAddArticleBinding
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.countingarticles.articles.ArticleFragmentDirections
-import com.example.countingarticles.articles.ArticleViewModel
-import com.example.countingarticles.articles.ArticleViewModelFactory
+import com.example.countingarticles.R
 import com.example.countingarticles.database.Article
 import com.example.countingarticles.database.ArticleDatabase
+import com.example.countingarticles.databinding.FragmentAddArticleBinding
 import kotlinx.android.synthetic.main.fragment_add_article.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -111,6 +113,7 @@ class AddArticle : Fragment() {
                 viewModel.updateArticle(name, price.toInt(), count.toInt())
             }
             navigateToListArticle()
+            hideKeyboard()
         }
     }
 
@@ -129,6 +132,7 @@ class AddArticle : Fragment() {
                 } else {
                     viewModel.removeArticle()
                     navigateToListArticle()
+                    hideKeyboard()
                 }
                 true
             }
@@ -141,6 +145,20 @@ class AddArticle : Fragment() {
             AddArticleDirections.nextActionToListArticle()
         findNavController().navigate(action)
     }
+
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
 
 }
 

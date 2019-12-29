@@ -1,14 +1,20 @@
 package com.example.countingarticles
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -35,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
         setSupportActionBar(findViewById(R.id.toolbar))
+        toolbar.setTitleTextColor(Color.WHITE)
         setTitle("Counting Article")
     }
 
@@ -51,10 +58,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun seleccioneRemove(){
-        print("Dime q bola")
-
-    }
-
-    }
+}
 
