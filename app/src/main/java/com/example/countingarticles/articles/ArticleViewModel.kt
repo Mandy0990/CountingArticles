@@ -55,13 +55,16 @@ class ArticleViewModel(
 
     fun getTextToShareWithWatsApp(): String{
         var s = ""
+        var total: Double = 0.0
         articles.let {
             for (art in it.value!!){
                 if (art.articleCount != 0 ){
-                    s += art.articlePrice.toString() + "$" + " " + art.articleCount.toString() + " " + art.articleName  + "\n"
+                    s += "$" + art.articlePrice.toString() + " - " + art.articleCount.toString() + " " + art.articleName  + "\n"
+                    total += art.articlePrice * art.articleCount
                 }
             }
         }
+        s += "Total: " + "$" + total.toString()
         return s
     }
 

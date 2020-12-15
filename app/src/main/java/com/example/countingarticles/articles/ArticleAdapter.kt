@@ -36,7 +36,7 @@ class ViewHolder private constructor(val binding: ArticleItemListViewBinding) : 
         binding.clickListener = clickListener
 
         binding.articleName.text = article.articleName
-        binding.articlePrice.text = article.articlePrice.toString()+ "$"
+        binding.articlePrice.text = "$" + article.articlePrice.toString()
         binding.articleCount.text = article.articleCount.toString()
         //itemView.setOnClickListener {
             //recyclerViewItemClickListener.onItemClicked(borrowedItemModel)
