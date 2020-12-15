@@ -9,6 +9,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -87,7 +88,7 @@ class AddArticle : Fragment() {
         }
     }
 
-    private fun putValueArticle(articleName: String, articlePrice: Int, articleCount: Int) {
+    private fun putValueArticle(articleName: String, articlePrice: Double, articleCount: Int) {
         binding.articleNameEdittext.setText(articleName)
         binding.articleCountEdittext.setText(articleCount.toString())
         binding.articlePriceEdittext.setText(articlePrice.toString())
@@ -98,22 +99,35 @@ class AddArticle : Fragment() {
             Toast.makeText(
                 activity, "Please enter a name for articcle",
                 Toast.LENGTH_SHORT
-            )
-                .show()
-        } else {
-            var name = article_name_edittext.text.toString()
-            var price =
-                if (article_price_edittext.text.toString() == "") "0" else article_price_edittext.text.toString()
-            var count =
-                if (article_count_edittext.text.toString() == "") "0" else article_count_edittext.text.toString()
+            ).show()
+        }else if( !article_price_edittext.text.isNullOrBlank() &&
+            !article_count_edittext.text.isNullOrBlank()){
 
-            if (articleId == -1) {
-                viewModel.addArticle(name, price.toInt(), count.toInt())
-            } else {
-                viewModel.updateArticle(name, price.toInt(), count.toInt())
-            }
-            navigateToListArticle()
+            var price = article_price_edittext.text
+            var count = article_count_edittext.text
+            var priceIsNumber = price.matches("-?\\d+(\\.\\d+)?".toRegex())
+            var countIsNumber = count.matches("-?\\d+(\\d+)?".toRegex())
             hideKeyboard()
+            if(!priceIsNumber || !countIsNumber){
+                Toast.makeText(
+                    activity, "Revise los campos Price and Count",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }else {
+                var name = article_name_edittext.text.toString()
+                var price =
+                    if (article_price_edittext.text.toString() == "") "0" else article_price_edittext.text.toString()
+                var count =
+                    if (article_count_edittext.text.toString() == "") "0" else article_count_edittext.text.toString()
+
+                if (articleId == -1) {
+                    viewModel.addArticle(name, price.toDouble(), count.toInt())
+                } else {
+                    viewModel.updateArticle(name, price.toDouble(), count.toInt())
+                }
+                navigateToListArticle()
+                hideKeyboard()
+            }
         }
     }
 

@@ -16,11 +16,48 @@
             android:id="@+id/article_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="48dp"
             android:background="#272822"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewTotal"
+            android:layout_width="417dp"
+            android:layout_height="56dp"
+            android:background="#272822"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/article_list" />
+
+        <TextView
+            android:id="@+id/labelPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Price"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/viewTotal"
+            app:layout_constraintStart_toStartOf="@+id/viewTotal" />
+
+        <TextView
+            android:id="@+id/labelTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Total"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/labelPrice"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

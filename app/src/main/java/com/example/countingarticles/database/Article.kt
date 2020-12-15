@@ -14,7 +14,7 @@ data class Article(
     var articleName: String = "",
 
     @ColumnInfo(name = "article_price")
-    var articlePrice: Int = -1,
+    var articlePrice: Double = -1.0,
 
     @ColumnInfo(name = "article_count")
     var articleCount: Int = -1)

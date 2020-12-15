@@ -16,6 +16,7 @@ import com.example.countingarticles.R
 import com.example.countingarticles.addArticle.AddArticleViewModel
 import com.example.countingarticles.database.ArticleDatabase
 import com.example.countingarticles.databinding.FragmentArticleBinding
+import kotlinx.android.synthetic.main.fragment_article.*
 
 
 /**
@@ -24,6 +25,7 @@ import com.example.countingarticles.databinding.FragmentArticleBinding
 class ArticleFragment : Fragment() {
 
     private lateinit var viewModel: ArticleViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,9 +38,7 @@ class ArticleFragment : Fragment() {
             inflater, R.layout.fragment_article, container, false)
 
         val application = requireNotNull(this.activity).application
-
         val dataSource = ArticleDatabase.getInstance(application).articleDatabaseDao
-
         val viewModelFactory = ArticleViewModelFactory(dataSource,application)
 
         Log.i("ArticleFragment", "Called ViewModelProviders.of")
@@ -56,6 +56,7 @@ class ArticleFragment : Fragment() {
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.labelPrice.text = viewModel.getTotalPriceArticle() + "$"
             }
         })
         // Add an Observer on the state variable for Navigating when and item is clicked.
@@ -68,7 +69,6 @@ class ArticleFragment : Fragment() {
                 viewModel.onAddArticleNavigated()
             }
         })
-
         binding.setLifecycleOwner(this)
 
         return binding.root
@@ -99,6 +99,10 @@ class ArticleFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun setTotalPrice(){
+        var s = viewModel.getTotalPriceArticle()
     }
 
 }

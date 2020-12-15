@@ -23,18 +23,10 @@ class ArticleViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     val articles = database.getAllArticles()
-
-    private var articleCurrent = MutableLiveData<Article?>()
-
+    private val _articleIdToUpdate = MutableLiveData<Long>()
 
     init {
-        initializeTonight()
-    }
-
-    private fun initializeTonight() {
-//        uiScope.launch {
-//            articleCurrent.value = getArticleCurrentFromDatabase()
-//        }
+     //Todo
     }
 
     private suspend fun getArticleCurrentFromDatabase(): Article? {
@@ -44,7 +36,7 @@ class ArticleViewModel(
         }
     }
 
-    private val _articleIdToUpdate = MutableLiveData<Long>()
+
     val articleIdToUpdate
         get() = _articleIdToUpdate
 
@@ -66,10 +58,22 @@ class ArticleViewModel(
         articles.let {
             for (art in it.value!!){
                 if (art.articleCount != 0 ){
-                    s += art.articleName + " " + art.articlePrice.toString() + "$" + " " + art.articleCount.toString() + "\n"
+                    s += art.articlePrice.toString() + "$" + " " + art.articleCount.toString() + " " + art.articleName  + "\n"
                 }
             }
         }
         return s
+    }
+
+    fun getTotalPriceArticle(): String{
+        var total: Double = 0.0
+        articles.let {
+            for (art in it.value!!){
+                if (art.articleCount != 0 ){
+                    total += art.articlePrice * art.articleCount
+                }
+            }
+        }
+        return total.toString()
     }
 }

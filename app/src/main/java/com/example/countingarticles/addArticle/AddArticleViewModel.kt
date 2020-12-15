@@ -41,7 +41,7 @@ class AddArticleViewModel(
         viewModelJob.cancel()
     }
 
-    fun addArticle(name: String,price: Int, count:Int){
+    fun addArticle(name: String,price: Double, count:Int){
         uiScope.launch {
             val newArticle = Article(
                 articleName = name,
@@ -58,7 +58,7 @@ class AddArticleViewModel(
         }
     }
 
-    fun updateArticle(name: String, price: Int, count:Int){
+    fun updateArticle(name: String, price: Double, count:Int){
         uiScope.launch {
             val oldArticle = article.value ?: return@launch
             oldArticle.articleName = name

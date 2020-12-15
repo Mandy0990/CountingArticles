@@ -9,5 +9,5 @@ data class ArticleModel(
     var id: Long = 0,
     val articleName: String,
     val countArticle: Int,
-    val priceArticle: Int
+    val priceArticle: Double
 )
