@@ -23,7 +23,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.countingarticles.addArticle.AddArticleDirections
 import com.example.countingarticles.articles.ArticleFragmentDirections
 import com.example.countingarticles.databinding.ActivityMainBinding
 import com.example.countingarticles.model.ArticleModel

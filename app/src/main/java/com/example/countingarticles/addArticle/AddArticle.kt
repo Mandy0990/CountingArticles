@@ -155,9 +155,10 @@ class AddArticle : Fragment() {
     }
 
     fun navigateToListArticle() {
-        val action =
-            AddArticleDirections.nextActionToListArticle()
-        findNavController().navigate(action)
+//        val action =
+//            AddArticleDirections.nextActionToListArticle()
+//        findNavController().navigate(action)
+        findNavController().popBackStack()
     }
 
     fun Fragment.hideKeyboard() {

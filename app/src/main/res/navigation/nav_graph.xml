@@ -14,9 +14,6 @@
             android:name="articleKey"
             app:argType="integer"
             android:defaultValue="-1"/>
-        <action
-            android:id="@+id/next_action_to_list_article"
-            app:destination="@id/articleFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
