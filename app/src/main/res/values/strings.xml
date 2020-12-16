@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">CountingArticles</string>
+    <string name="app_name">Counting</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_article">Add</string>
+    <string name="reset_article">Reset</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
     <string name="name_article">Name Article</string>

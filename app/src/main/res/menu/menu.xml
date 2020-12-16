@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/resetArticle"
+        android:icon="@android:drawable/stat_notify_sync"
+        android:title="@string/reset_article"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/addArticle"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_article"
