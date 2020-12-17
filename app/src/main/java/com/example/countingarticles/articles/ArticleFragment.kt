@@ -97,8 +97,9 @@ class ArticleFragment : Fragment() {
                 true
             }
             R.id.btnResetArticle ->{
+                viewModel.removeAllArticles()
                 Toast.makeText(
-                    activity, "Action Reset Articles",
+                    activity, "Removed All Articles",
                     Toast.LENGTH_SHORT
                 ).show()
                 return true

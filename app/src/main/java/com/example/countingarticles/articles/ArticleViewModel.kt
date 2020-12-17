@@ -79,4 +79,12 @@ class ArticleViewModel(
         }
         return total.toString()
     }
+
+    fun removeAllArticles() {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                database.clear()
+            }
+        }
+    }
 }
