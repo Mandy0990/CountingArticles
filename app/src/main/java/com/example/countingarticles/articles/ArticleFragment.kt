@@ -81,7 +81,6 @@ class ArticleFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.button_share -> {
-
                 var textToShare = viewModel.getTextToShareWithWatsApp()
                 val whatsappIntent = Intent(Intent.ACTION_SEND)
                 whatsappIntent.type = "text/plain"
@@ -97,12 +96,14 @@ class ArticleFragment : Fragment() {
                 }
                 true
             }
+            R.id.btnResetArticle ->{
+                Toast.makeText(
+                    activity, "Action Reset Articles",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    fun setTotalPrice(){
-        var s = viewModel.getTotalPriceArticle()
-    }
-
 }

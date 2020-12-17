@@ -150,6 +150,7 @@ class AddArticle : Fragment() {
                 }
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
