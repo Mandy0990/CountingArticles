@@ -32,6 +32,4 @@ abstract class ArticleDatabase: RoomDatabase(){
             }
         }
     }
-
-
 }

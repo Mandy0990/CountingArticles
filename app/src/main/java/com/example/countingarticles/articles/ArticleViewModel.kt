@@ -72,12 +72,30 @@ class ArticleViewModel(
         var total: Double = 0.0
         articles.let {
             for (art in it.value!!){
-                if (art.articleCount != 0 ){
+                if (art.articleCount != 0 && art.articlePrice != 0.0 ){
                     total += art.articlePrice * art.articleCount
                 }
             }
         }
         return total.toString()
+    }
+    //** CRUD BD **
+
+    fun addNewArticle(){
+        uiScope.launch {
+            val newArticle = Article(
+                articleName = "Pandora",
+                articlePrice =  0.0,
+                articleCount = 0
+            )
+             insert(newArticle)
+        }
+    }
+
+    private suspend fun insert(article: Article) {
+        withContext(Dispatchers.IO) {
+            database.insert(article)
+        }
     }
 
     fun removeAllArticles() {

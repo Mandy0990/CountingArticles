@@ -47,26 +47,17 @@ class ArticleFragment : Fragment() {
             this,viewModelFactory).get(ArticleViewModel::class.java)
         binding.articleViewModel = viewModel
 
-        val adapter = ArticleAdapter(ArticleListener { articleId ->
-            //Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
-            viewModel.onArticleClicked(articleId)
-        })
+        val adapter = ArticleAdapter()
+//        val adapter = ArticleAdapter(ArticleListener { articleId ->
+//            //Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
+//            viewModel.onArticleClicked(articleId)
+//        })
         binding.articleList.adapter = adapter
 
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
                 binding.labelPrice.text = viewModel.getTotalPriceArticle() + "$"
-            }
-        })
-        // Add an Observer on the state variable for Navigating when and item is clicked.
-        viewModel.articleIdToUpdate.observe(this, Observer { articleId ->
-            articleId?.let {
-
-                this.findNavController().navigate(
-                    ArticleFragmentDirections
-                        .nextActionToAddArticle(articleId.toInt()))
-                viewModel.onAddArticleNavigated()
             }
         })
         binding.setLifecycleOwner(this)
@@ -100,6 +91,14 @@ class ArticleFragment : Fragment() {
                 viewModel.removeAllArticles()
                 Toast.makeText(
                     activity, "Removed All Articles",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return true
+            }
+            R.id.addArticle ->{
+                viewModel.addNewArticle()
+                Toast.makeText(
+                    activity, "Added New Row",
                     Toast.LENGTH_SHORT
                 ).show()
                 return true

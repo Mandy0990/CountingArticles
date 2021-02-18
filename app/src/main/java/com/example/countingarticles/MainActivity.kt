@@ -23,7 +23,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.countingarticles.articles.ArticleFragmentDirections
 import com.example.countingarticles.databinding.ActivityMainBinding
 import com.example.countingarticles.model.ArticleModel
 import com.example.countingarticles.model.ObjectBox
@@ -44,17 +43,17 @@ class MainActivity : AppCompatActivity() {
         setTitle("Counting Article")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.addArticle -> {
-                // Have the NavigationUI look for an action or destination matching the menu
-                // item id and navigate there if found.
-                // Otherwise, bubble up to the parent.
-                return item.onNavDestinationSelected(findNavController(R.id.my_nav_fragment))
-                        || super.onOptionsItemSelected(item)
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.addArticle -> {
+//                // Have the NavigationUI look for an action or destination matching the menu
+//                // item id and navigate there if found.
+//                // Otherwise, bubble up to the parent.
+//                return item.onNavDestinationSelected(findNavController(R.id.my_nav_fragment))
+//                        || super.onOptionsItemSelected(item)
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 }
 
