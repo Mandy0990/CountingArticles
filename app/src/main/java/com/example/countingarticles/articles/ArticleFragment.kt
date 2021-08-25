@@ -22,9 +22,10 @@ import kotlinx.android.synthetic.main.fragment_article.*
 /**
  * A simple [Fragment] subclass.
  */
-class ArticleFragment : Fragment() {
+class ArticleFragment : Fragment(),OnChangeValuesListener {
 
     private lateinit var viewModel: ArticleViewModel
+    private lateinit var binding: FragmentArticleBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +35,7 @@ class ArticleFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentArticleBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_article, container, false)
 
         val application = requireNotNull(this.activity).application
@@ -47,17 +48,16 @@ class ArticleFragment : Fragment() {
             this,viewModelFactory).get(ArticleViewModel::class.java)
         binding.articleViewModel = viewModel
 
-        val adapter = ArticleAdapter()
+        val adapter = ArticleAdapter(this)
 //        val adapter = ArticleAdapter(ArticleListener { articleId ->
 //            //Toast.makeText(context, "${articleId}", Toast.LENGTH_LONG).show()
 //            viewModel.onArticleClicked(articleId)
 //        })
         binding.articleList.adapter = adapter
 
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
+        viewModel.listArticles.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-                binding.labelPrice.text = viewModel.getTotalPriceArticle() + "$"
             }
         })
         binding.setLifecycleOwner(this)
@@ -104,6 +104,13 @@ class ArticleFragment : Fragment() {
                 return true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onOnChangeValuesListener(value:String, articlePosition: Int, typeField:String) {
+        val s = viewModel.getTotalPriceArticle(value,articlePosition,typeField) + "$"
+        s?.let {
+            binding.labelPrice.text = it
         }
     }
 }

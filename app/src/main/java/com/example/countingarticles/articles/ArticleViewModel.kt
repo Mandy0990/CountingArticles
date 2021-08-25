@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.countingarticles.database.Article
 import com.example.countingarticles.database.ArticleDataBaseDAO
+import com.example.countingarticles.model.ArticleModel
 import kotlinx.coroutines.*
 
 
@@ -22,17 +23,20 @@ class ArticleViewModel(
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val articles = database.getAllArticles()
+//    val articles = database.getAllArticles()
     private val _articleIdToUpdate = MutableLiveData<Long>()
 
+    val listArticles: MutableLiveData<List<Article>> by lazy {
+        MutableLiveData<List<Article>>()
+    }
+
     init {
-     //Todo
+        this.listArticles.apply { postValue(emptyList()) }
     }
 
     private suspend fun getArticleCurrentFromDatabase(): Article? {
         return withContext(Dispatchers.IO) {
-            var article = database.get(0)
-            article
+            return@withContext  database.get(0)
         }
     }
 
@@ -56,7 +60,7 @@ class ArticleViewModel(
     fun getTextToShareWithWatsApp(): String{
         var s = ""
         var total: Double = 0.0
-        articles.let {
+        listArticles.let {
             for (art in it.value!!){
                 if (art.articleCount != 0 ){
                     s += "$" + art.articlePrice.toString() + " - " + art.articleCount.toString() + " " + art.articleName  + "\n"
@@ -68,28 +72,46 @@ class ArticleViewModel(
         return s
     }
 
-    fun getTotalPriceArticle(): String{
+    fun getTotalPriceArticle(value:String, articlePosition: Int, typeField:String): String?{
         var total: Double = 0.0
-        articles.let {
-            for (art in it.value!!){
-                if (art.articleCount != 0 && art.articlePrice != 0.0 ){
-                    total += art.articlePrice * art.articleCount
+
+        if(value != "") {
+            if (typeField == "price") {
+                listArticles.value?.get(articlePosition)?.articlePrice = value.toDouble()
+            } else {
+                listArticles.value?.get(articlePosition)?.articleCount = value.toInt()
+            }
+
+
+            listArticles.let {
+                for (art in it.value!!) {
+                    if (art.articleCount != 0 && art.articlePrice != 0.0) {
+                        total += art.articlePrice * art.articleCount
+                    }
                 }
             }
+            return total.toString()
         }
-        return total.toString()
+        return null
     }
     //** CRUD BD **
 
     fun addNewArticle(){
-        uiScope.launch {
-            val newArticle = Article(
-                articleName = "Pandora",
-                articlePrice =  0.0,
-                articleCount = 0
-            )
-             insert(newArticle)
-        }
+        val newArticle = Article(
+            articleName = "",
+            articlePrice =  0.0,
+            articleCount = 0
+        )
+        this.listArticles.apply { postValue(listArticles.value?.plus(newArticle)) }
+
+//        uiScope.launch {
+//            val newArticle = Article(
+//                articleName = "Pandora",
+//                articlePrice =  0.0,
+//                articleCount = 0
+//            )
+//             insert(newArticle)
+//        }
     }
 
     private suspend fun insert(article: Article) {

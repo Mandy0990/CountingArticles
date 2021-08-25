@@ -15,11 +15,11 @@ import com.example.countingarticles.database.Article
 import com.example.countingarticles.databinding.ArticleItemListViewBinding
 
 
-class ArticleAdapter(): ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
+class ArticleAdapter(var onChangeValuesListener: OnChangeValuesListener?): ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent,onChangeValuesListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -29,44 +29,55 @@ class ArticleAdapter(): ListAdapter<Article,ViewHolder>(ArticleDiffCallback())
 
 }
 
-class ViewHolder private constructor(val binding: ArticleItemListViewBinding) : RecyclerView.ViewHolder(binding.root){
-    //val nameArticle: TextView = itemView.findViewById(R.id.article_name)
-    //val priceArticle: TextView = itemView.findViewById(R.id.article_price)
-    //val countArticle: TextView = itemView.findViewById(R.id.article_count)
+class ViewHolder private constructor(val binding: ArticleItemListViewBinding, val onChangeValuesListener: OnChangeValuesListener?) : RecyclerView.ViewHolder(binding.root){
+    init {
+        binding.articleCount.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println(s)
+                onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"count")
+            }
+        })
+
+        binding.articlePrice.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println(s)
+                onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"price")
+            }
+        })
+
+        binding.articleName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println(s)
+            }
+        })
+    }
 
     fun bind(article: Article) {
         binding.article = article
-
-//        binding.articleCount.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                print(s.toString())
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//                print(s.toString())
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                print(s.toString())
-//            }
-//        })
-        binding.articleCount.doAfterTextChanged {
-            print(it.toString())
-        }
-
-
-//        binding.articleName.text = article.articleName
-//        binding.articlePrice.text = "$" + article.articlePrice.toString()
-//        binding.articleCount.text = article.articleCount.toString()
+        binding.articleName.setText(article.articleName)
+        binding.articlePrice.setText(article.articlePrice.toString())
+        binding.articleCount.setText(article.articleCount.toString())
 
         binding.executePendingBindings()
     }
 
     companion object {
-        fun from(parent: ViewGroup): ViewHolder {
+        fun from(parent: ViewGroup,onChangeValuesListener: OnChangeValuesListener?): ViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ArticleItemListViewBinding.inflate(layoutInflater,parent,false)
-            return ViewHolder(binding)
+            return ViewHolder(binding,onChangeValuesListener)
         }
     }
 }
@@ -84,6 +95,10 @@ class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
 
 class ArticleListener(val clickListener: (articleId: Long) -> Unit) {
     fun onClick(article: Article) = clickListener(article.Id)
+}
+
+interface OnChangeValuesListener  {
+    fun onOnChangeValuesListener(value:String, articlePosition: Int, typeField: String)
 }
 
 
