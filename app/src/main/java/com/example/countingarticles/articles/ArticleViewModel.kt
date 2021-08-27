@@ -31,7 +31,7 @@ class ArticleViewModel(
     }
 
     init {
-        this.listArticles.apply { postValue(emptyList()) }
+        initEmptyArticles()
     }
 
     private suspend fun getArticleCurrentFromDatabase(): Article? {
@@ -75,11 +75,10 @@ class ArticleViewModel(
     fun getTotalPriceArticle(value:String, articlePosition: Int, typeField:String): String?{
         var total: Double = 0.0
 
-        if(value != "") {
             if (typeField == "price") {
-                listArticles.value?.get(articlePosition)?.articlePrice = value.toDouble()
+                listArticles.value?.get(articlePosition)?.articlePrice = if (value == "") 0.0 else value.toDouble()
             } else {
-                listArticles.value?.get(articlePosition)?.articleCount = value.toInt()
+                listArticles.value?.get(articlePosition)?.articleCount = if (value == "") 0 else value.toInt()
             }
 
 
@@ -91,11 +90,19 @@ class ArticleViewModel(
                 }
             }
             return total.toString()
-        }
-        return null
     }
-    //** CRUD BD **
 
+    fun initEmptyArticles(){
+        val newArticle = Article(
+            articleName = "",
+            articlePrice =  0.0,
+            articleCount = 0
+        )
+        val list = mutableListOf(newArticle,newArticle,newArticle,newArticle,newArticle)
+        this.listArticles.apply { postValue(list) }
+    }
+
+    //** CRUD BD **
     fun addNewArticle(){
         val newArticle = Article(
             articleName = "",
@@ -121,10 +128,10 @@ class ArticleViewModel(
     }
 
     fun removeAllArticles() {
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                database.clear()
-            }
-        }
+//        uiScope.launch {
+//            withContext(Dispatchers.IO) {
+//                database.clear()
+//            }
+//        }
     }
 }

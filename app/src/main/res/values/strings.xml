@@ -9,6 +9,6 @@
     <string name="delete">Delete</string>
     <string name="name_article">Name Article</string>
     <string name="article_name">Name Article</string>
-    <string name="article_price">Price</string>
-    <string name="article_count">Count</string>
+    <string name="article_price">$0.0</string>
+    <string name="article_count">#0</string>
 </resources>

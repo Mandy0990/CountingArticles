@@ -1,6 +1,7 @@
 package com.example.countingarticles.articles
 
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,12 +29,29 @@ class ArticleFragment : Fragment(),OnChangeValuesListener {
     private lateinit var viewModel: ArticleViewModel
     private lateinit var binding: FragmentArticleBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //        this.fragmentManager?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//        activity?.window?.setSoftInputMode(
+//            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+//        )
+
+//        activity?.window?.getDecorView().setBackgroundColor(
+//            android.R.color.transparent);
+
+        //Cambiar color por detras del teclado Tip-Importan
+        activity?.window?.decorView?.setBackgroundColor(resources.getColor(R.color.colorApp))
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
+
 
         // Get a reference to the binding object and inflate the fragment views.
         binding = DataBindingUtil.inflate(

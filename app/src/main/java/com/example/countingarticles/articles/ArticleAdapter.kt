@@ -38,7 +38,9 @@ class ViewHolder private constructor(val binding: ArticleItemListViewBinding, va
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 println(s)
-                onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"count")
+                s?.let {
+                    onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"count")
+                }
             }
         })
 
@@ -49,7 +51,10 @@ class ViewHolder private constructor(val binding: ArticleItemListViewBinding, va
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 println(s)
-                onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"price")
+
+                s?.let {
+                    onChangeValuesListener?.onOnChangeValuesListener(s.toString(),adapterPosition,"price")
+                }
             }
         })
 
@@ -67,8 +72,12 @@ class ViewHolder private constructor(val binding: ArticleItemListViewBinding, va
     fun bind(article: Article) {
         binding.article = article
         binding.articleName.setText(article.articleName)
-        binding.articlePrice.setText(article.articlePrice.toString())
-        binding.articleCount.setText(article.articleCount.toString())
+
+        var textPrice = if (article.articlePrice == 0.0 )  "" else article.articlePrice.toString()
+        binding.articlePrice.setText(textPrice)
+
+        var textCount = if (article.articleCount == 0 )  "" else article.articleCount.toString()
+        binding.articleCount.setText(textCount)
 
         binding.executePendingBindings()
     }
